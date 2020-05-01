@@ -6,9 +6,11 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -26,23 +28,27 @@ import com.idan.painter.SelectedShape.DrawingType;
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener {
 	private static final int BASIC_THICK = 1;
 	private static final int DRAW_OFFSET = 5;
+	private static final int OVAL_THICK_FIX = 5;
+	private static final int LINE_THICK_FIX = 2;
 	private static final BasicStroke DASH = new BasicStroke(1.0f, BasicStroke.CAP_ROUND,
 			BasicStroke.JOIN_ROUND, 10.0f, new float[] {10.0f}, 0.0f);
 	
+	private final ArrayList<Shape> shapes;
+	private final Cursor crosshair;
+	private final Cursor blank;
+	private final BufferedImage cursorImg;
 	private SelectedShape selectedShape;
-	private DrawingType drawingType;
-	private ArrayList<Shape> shapes;
+	private DrawingType drawingType;	
 	private FreeHand freeHand;
 	private Point origin;
 	private Point current;
+	private Color color;
 	private int originX;
 	private int originY;
 	private int currentX;
 	private int currentY;
-	private int thickness;
-	private Color color;
+	private int thickness;	
 	private boolean filled;
-	private Cursor crosshair;
 
 	/**
 	 * Constructs a clean canvas for drawings.
@@ -50,6 +56,8 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 	public Canvas() {
 		shapes = new ArrayList<Shape>();
 		crosshair = new Cursor(Cursor.CROSSHAIR_CURSOR);
+		cursorImg = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+		blank = Toolkit.getDefaultToolkit().createCustomCursor(cursorImg, new Point(0,0), "blank");
 
 		// initialize tools for initiate drawing
 		selectedShape = SelectedShape.FREE_HAND;
@@ -164,16 +172,26 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 	 * Creates a new hexagon on the canvas.
 	 */
 	private void createHexagon() {
-		int x1 = originX + (currentX - originX) / 4; // north west and south west x coordinate
-		int x2 = originX + 3 * (currentX - originX) / 4; // north east and south east x
-		int x3 = currentX; // east x
-		int x4 = originX; // west x
-		int y1 = originY; // north west and north east y coordinate
-		int y2 = originY + (currentY - originY) / 2; // west and east y
-		int y3 = currentY; // south west and south east y
+		int[] points = initHexagonPoints();
 
-		shapes.add(new Hexagon(new int[] { x1, x2, x3, x2, x1, x4 }, new int[] { y1, y1, y2, y3, y3, y2 }, thickness,
-				color, filled));
+		shapes.add(new Hexagon(new int[] { points[0], points[1], points[2], points[1], points[0], points[3] },
+				new int[] { points[4], points[4], points[5], points[6], points[6], points[5] },
+				thickness, color, filled));
+	}
+	
+	/*
+	 * Initializes the points of an hexagon as seen on x,y axis
+	 */
+	private int[] initHexagonPoints() {
+		int x1 = originX + (currentX - originX) / 4; 	   // north west and south west x coordinate
+		int x2 = originX + (3 * (currentX - originX) / 4); // north east and south east x
+		int x3 = currentX; 								   // east x
+		int x4 = originX; 								   // west x
+		int y1 = originY; 								   // north west and north east y coordinate
+		int y2 = originY + (currentY - originY) / 2; 	   // west and east y
+		int y3 = currentY; 								   // south west and south east y
+		
+		return new int[] {x1, x2, x3, x4, y1, y2, y3};
 	}
 
 	/*
@@ -222,15 +240,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 			break;
 
 		case HEXAGON:
-			int x1 = originX + (currentX - originX) / 4; // north west and south west x coordinate
-			int x2 = originX + 3 * (currentX - originX) / 4; // north east and south east x
-			int x3 = currentX; // east x
-			int x4 = originX; // west x
-			int y1 = originY; // north west and north east y coordinate
-			int y2 = originY + (currentY - originY) / 2; // west and east y
-			int y3 = currentY; // south west and south east y
+			int[] points = initHexagonPoints();
 
-			g2.drawPolygon(new int[] { x1, x2, x3, x2, x1, x4 }, new int[] { y1, y1, y2, y3, y3, y2 }, 6);
+			g2.drawPolygon(new int[] { points[0], points[1], points[2], points[1], points[0], points[3] },
+					new int[] { points[4], points[4], points[5], points[6], points[6], points[5] }, 6);
 			break;
 
 		case LINE:
@@ -238,6 +251,13 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 			break;
 
 		case FREE_HAND:
+			// show a following dot to mark the place of the cursor
+			if(drawingType == DrawingType.LINES)
+				g2.fillOval(currentX, currentY, thickness * LINE_THICK_FIX, thickness * LINE_THICK_FIX);
+			else
+				g2.fillOval(currentX, currentY, thickness * OVAL_THICK_FIX, thickness * OVAL_THICK_FIX);
+			
+			// draw
 			if(freeHand != null)
 				freeHand.draw(g2);
 			break;
@@ -274,13 +294,13 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 		if (selectedShape == SelectedShape.FREE_HAND) {
 			switch(drawingType) {
 			case LINES:
-				freeHand.setDrawing(new Line((int) origin.getX(), (int) origin.getY(), (int) current.getX(), (int) current.getY(),
-						thickness, color));
+				freeHand.setDrawing(new Line((int) origin.getX(), (int) origin.getY(),
+						(int) current.getX(), (int) current.getY(), thickness, color));
 				break;
 				
 			case OVALS:
-				freeHand.setDrawing(new Oval((int) origin.getX() - DRAW_OFFSET, (int) origin.getY() - DRAW_OFFSET, thickness*5, thickness*5,
-						thickness, color, true));
+				freeHand.setDrawing(new Oval((int) origin.getX() - DRAW_OFFSET, (int) origin.getY() - DRAW_OFFSET,
+						thickness * OVAL_THICK_FIX, thickness * OVAL_THICK_FIX, thickness, color, true));
 				break;
 			}
 
@@ -343,11 +363,20 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		setCursor(crosshair);
+		if(selectedShape == SelectedShape.FREE_HAND)
+			setCursor(blank); // the cursor is set to be a dot
+		else
+			setCursor(crosshair);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		// update cursor position to show a drawing dot
+		if(selectedShape == SelectedShape.FREE_HAND) {
+			currentX = e.getX();
+			currentY = e.getY();
+			repaint();
+		}
 	}
 
 	@Override

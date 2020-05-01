@@ -61,19 +61,19 @@ public class UserInterface extends JFrame implements ActionListener, MouseListen
 	private static final EmptyBorder PANEL_BORDER = new EmptyBorder(10, 10, 10, 10);
 	private static final EmptyBorder BTN_BORDER = new EmptyBorder(-10, -10, -10, -10);
 
-	private JPanel mainUiPanel;
-	private JPanel colorsPanel;
-	private JPanel shapesPanel;
-	private JPanel toolsPanel;
-	private JPanel editPanel;
-	private Canvas canvas;
-	private JButton[] colorsBtn;
-	private JButton[] shapesBtn;
-	private JButton fillColorBtn;
-	private JButton undoBtn;
-	private JButton clearCanvasBtn;
-	private JComboBox<String> selectThickness;
-	private JComboBox<String> drawingTool;
+	private final JPanel mainUiPanel;
+	private final JPanel colorsPanel;
+	private final JPanel shapesPanel;
+	private final JPanel toolsPanel;
+	private final JPanel editPanel;
+	private final Canvas canvas;
+	private final JButton[] colorsBtn;
+	private final JButton[] shapesBtn;
+	private final JButton fillColorBtn;
+	private final JButton undoBtn;
+	private final JButton clearCanvasBtn;
+	private final JComboBox<String> selectThickness;
+	private final JComboBox<String> drawingTool;
 	private boolean filled;
 
 	/**
@@ -363,7 +363,7 @@ public class UserInterface extends JFrame implements ActionListener, MouseListen
 	}
 
 	/*
-	 * Sets tool tips text popup for the buttons.
+	 * Sets tool tips text popup for each button.
 	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {

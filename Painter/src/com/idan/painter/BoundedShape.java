@@ -12,16 +12,15 @@ public abstract class BoundedShape extends Shape {
 	private boolean filled;
 
 	/**
-	 * Constructs a geometric bounded shape with the specified upper left x and y
-	 * coordinates (upper left point), a color attribute and a boolean filled color
-	 * attribute.
+	 * Constructs a geometric bounded shape with the specified boundaries,
+	 * color, thickness and a boolean filled color attribute.
 	 * 
 	 * @param upperLeftX the upper left x coordinate of the bounded shape
 	 * @param upperLeftY the upper left y coordinate of the bounded shape
 	 * @param width      the width of the bounded shape
 	 * @param height     the height of the bounded shape
-	 * @param color      the color of the bounded shape
 	 * @param thickness  the thickness of the outline of this bounded shape
+	 * @param color      the color of the bounded shape
 	 * @param isFilled   whether the bounded shape is filled with color
 	 */
 	public BoundedShape(int upperLeftX, int upperLeftY, int width, int height, int thickness, Color color, boolean filled) {
@@ -29,14 +28,17 @@ public abstract class BoundedShape extends Shape {
 		this.filled = filled;
 	}
 	
-
+	/**
+	 * Constructs a geometric bounded shape with the specified
+	 * color, thickness and a boolean filled color attribute.
+	 * 
+	 * @param thickness the thickness of the outline of this bounded shape
+	 * @param color 	the color of the bounded shape
+	 * @param filled 	whether the bounded shape is filled with color
+	 */
 	public BoundedShape(int thickness, Color color, boolean filled) {
 		super(thickness, color);
 		this.filled = filled;
-	}
-	
-	
-	public BoundedShape() {
 	}
 	
 	/**

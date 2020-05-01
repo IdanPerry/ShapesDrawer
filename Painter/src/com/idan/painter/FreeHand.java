@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 
 public class FreeHand extends Shape {
-	private ArrayList<Shape> drawing;
+	private final ArrayList<Shape> drawing;
 
 	/**
 	 * Constructs a clean free hand drawing object.

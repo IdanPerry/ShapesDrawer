@@ -21,8 +21,8 @@ public enum SelectedShape {
 	// free hand drawing constants
 	public enum DrawingType {LINES, OVALS};
 	
-	private String symbol;
-	private int index;
+	private final String symbol;
+	private final int index;
 	
 	/**
 	 * Constructs an enum selected shape object with the

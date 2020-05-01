@@ -14,8 +14,8 @@ public abstract class Polygon extends BoundedShape {
 	private int[] yPoints;
 
 	/**
-	 * Constructs a polygon with the specified upper left x and y coordinates (upper
-	 * left point), a color attribute and a boolean filled color attribute.
+	 * Constructs a polygon with the specified boundaries, color
+	 * and a boolean filled color attribute.
 	 * 
 	 * @param upperLeftX the upper left x coordinate of this polygon
 	 * @param upperLeftY the upper left y coordinate of this polygon
