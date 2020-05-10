@@ -1,4 +1,4 @@
-package com.idan.painter;
+package com.idan.shapesDrawer;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
-import com.idan.painter.SelectedShape.DrawingType;
+import com.idan.shapesDrawer.SelectedShape.DrawingType;
 
 /**
  * This class represents a canvas for drawings.

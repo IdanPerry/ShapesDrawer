@@ -1,4 +1,4 @@
-package com.idan.painter;
+package com.idan.shapesDrawer;
 
 import java.awt.Color;
 import java.awt.Graphics;

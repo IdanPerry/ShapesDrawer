@@ -1,4 +1,6 @@
-package com.idan.painter;
+package com.idan.shapesDrawer;
+
+import static com.idan.shapesDrawer.SelectedShape.*;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -18,8 +20,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-
-import static com.idan.painter.SelectedShape.*;
 
 /**
  * This class represents the user interface for the drawing application.
@@ -96,7 +96,7 @@ public class UserInterface extends JFrame implements ActionListener, MouseListen
 		drawingTool = new JComboBox<String>(DRAWING_TOOLS_VISUAL);
 
 		// frame properties
-		setTitle("Shapes Painter");
+		setTitle("Shapes Drawer");
 		setLayout(new BorderLayout(20, 20));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(FRAME_WIDTH, FRAME_HEIGHT);

@@ -1,4 +1,4 @@
-package com.idan.painter;
+package com.idan.shapesDrawer;
 
 /**
  * This enum class represents the state of the selected shape
