@@ -254,60 +254,14 @@ public class UserInterface extends JFrame implements ActionListener, MouseListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// rectangle drawing
-		if (e.getSource() == shapesBtn[RECTENGLE.getIndex()]) {
-			resetBtnsBackgroundColor();
-			setPressedBtnColor(shapesBtn[RECTENGLE.getIndex()]);
-			canvas.setSelectedShape(RECTENGLE);
-		}
-
-		// round rectangle drawing
-		if (e.getSource() == shapesBtn[ROUND_RECTANGLE.getIndex()]) {
-			resetBtnsBackgroundColor();
-			setPressedBtnColor(shapesBtn[ROUND_RECTANGLE.getIndex()]);
-			canvas.setSelectedShape(ROUND_RECTANGLE);
-		}
-
-		// oval drawing
-		if (e.getSource() == shapesBtn[OVAL.getIndex()]) {
-			resetBtnsBackgroundColor();
-			setPressedBtnColor(shapesBtn[OVAL.getIndex()]);
-			canvas.setSelectedShape(OVAL);
-		}
-
-		// isosceles triangle drawing
-		if (e.getSource() == shapesBtn[ISO_TRIANGLE.getIndex()]) {
-			resetBtnsBackgroundColor();
-			setPressedBtnColor(shapesBtn[ISO_TRIANGLE.getIndex()]);
-			canvas.setSelectedShape(ISO_TRIANGLE);
-		}
-
-		// right triangle drawing
-		if (e.getSource() == shapesBtn[RIGHT_TRIANGLE.getIndex()]) {
-			resetBtnsBackgroundColor();
-			setPressedBtnColor(shapesBtn[RIGHT_TRIANGLE.getIndex()]);
-			canvas.setSelectedShape(RIGHT_TRIANGLE);
-		}
-
-		// line drawing
-		if (e.getSource() == shapesBtn[LINE.getIndex()]) {
-			resetBtnsBackgroundColor();
-			setPressedBtnColor(shapesBtn[LINE.getIndex()]);
-			canvas.setSelectedShape(LINE);
-		}
-
-		// hexagon drawing
-		if (e.getSource() == shapesBtn[HEXAGON.getIndex()]) {
-			resetBtnsBackgroundColor();
-			setPressedBtnColor(shapesBtn[HEXAGON.getIndex()]);
-			canvas.setSelectedShape(HEXAGON);
-		}
-
-		// free hand drawing
-		if (e.getSource() == shapesBtn[FREE_HAND.getIndex()]) {
-			resetBtnsBackgroundColor();
-			setPressedBtnColor(shapesBtn[FREE_HAND.getIndex()]);
-			canvas.setSelectedShape(FREE_HAND);
+		// shapes selection
+		for(SelectedShape shape : SelectedShape.values()) {
+			if(e.getSource() == shapesBtn[shape.getIndex()]) {
+				resetBtnsBackgroundColor();
+				setPressedBtnColor(shapesBtn[shape.getIndex()]);
+				canvas.setSelectedShape(shape);
+				break;
+			}				
 		}
 
 		// fill shape with color selection
