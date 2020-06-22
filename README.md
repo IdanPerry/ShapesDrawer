@@ -8,6 +8,7 @@ This is a mini project i did which was a home assignment durring a Java course. 
 - Free hand writing, using various tools selection
 - 5 line thickness levels
 - Supports undo, redo and clear canvas options
+- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
 
 #### Demo
 <img src="app_demo/demo1.gif" width="650"/>
