@@ -17,13 +17,11 @@ public abstract class Polygon extends BoundedShape {
 	 * Constructs a polygon with the specified boundaries, color
 	 * and a boolean filled color attribute.
 	 * 
-	 * @param upperLeftX the upper left x coordinate of this polygon
-	 * @param upperLeftY the upper left y coordinate of this polygon
-	 * @param width      the width of this polygon
-	 * @param height     the height of this polygon
-	 * @param color      the color of the polygon
-	 * @param thickness  the thickness of the outline of this polygon
-	 * @param isFilled   whether this polygon is filled with color
+	 * @param xPoints 	the x coordinates of this polygon
+	 * @param yPoints 	the y coordinates of this polygon
+	 * @param color   	the color of the polygon
+	 * @param thickness the thickness of the outline of this polygon
+	 * @param filled  	whether this polygon is filled with color
 	 */
 	public Polygon(int[] xPoints, int[] yPoints, int thickness, Color color, boolean filled) {
 		super(thickness, color, filled);
@@ -52,7 +50,7 @@ public abstract class Polygon extends BoundedShape {
 	/**
 	 * Changes the array of y coordinates of this polygon.
 	 * 
-	 * @param xPoints the array of y coordinates of this polygon
+	 * @param yPoints the array of y coordinates of this polygon
 	 */
 	public void setYPoints(int[] yPoints) {
 		this.yPoints = yPoints;

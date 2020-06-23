@@ -34,7 +34,7 @@ public class Oval extends BoundedShape {
 	}
 	
 	public boolean hasPoint(int x, int y) {
-		return Geometry.isOnElipse(getX1(), getY1(), getX2(), getY2(), new Point(x, y));
+		return Geometry.isOnEllipse(getX1(), getY1(), getX2(), getY2(), new Point(x, y));
 	}
 	
 	@Override

@@ -45,8 +45,8 @@ public class DrawingEditor extends JFrame implements ActionListener {
 	private JTextField[] sizeFields;
 	private JTextField[] colorFields; 
 	private CustomButton submitBtn;
-	private Canvas canvas;
-	private Shape shape;
+	private final Canvas canvas;
+	private final Shape shape;
 	
 	/**
 	 * Constructs an editor which control a selected drawn shape properties.

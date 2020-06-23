@@ -25,7 +25,6 @@ public class CustomButton extends JButton implements MouseListener {
 	private static final Dimension SIZE = new Dimension(30, 30);
 	private static final EmptyBorder BORDER = new EmptyBorder(-10, -10, -10, -10);
 	
-	private ImageIcon icon;
 	private boolean clicked;
 	
 	/**
@@ -45,7 +44,7 @@ public class CustomButton extends JButton implements MouseListener {
 		addMouseListener(this);
 		
 		try {
-			icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/" + iconPath + ".png")));
+			ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/" + iconPath + ".png")));
 			setIcon(icon);
 		} catch (IOException e) {
 			e.printStackTrace();

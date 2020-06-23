@@ -63,7 +63,7 @@ public class Geometry {
 	 * @param height the height of the rectangle blocking the given elipse
 	 * @return the center point of the elipse
 	 */
-	public static Point elipseCenter(int x, int y, int width, int height) {
+	public static Point ellipseCenter(int x, int y, int width, int height) {
 		return new Point(width / 2 + x, height / 2 + y);
 	}
 
@@ -82,11 +82,11 @@ public class Geometry {
 	 * @return true if a given point is in the bouderies of a given elipse
 	 *         circumference. Returns false otherwise
 	 */
-	public static boolean isOnElipse(int x, int y, int width, int height, Point p) {
-		Point center = elipseCenter(x, y, width, height);
-		double result = Math.pow(p.getX() - center.getX(), 2) / Math.pow(width / 2, 2)
-				+ Math.pow(p.getY() - center.getY(), 2) / Math.pow(height / 2, 2);
+	public static boolean isOnEllipse(int x, int y, int width, int height, Point p) {
+		Point center = ellipseCenter(x, y, width, height);
+		double result = Math.pow(p.getX() - center.getX(), 2) / Math.pow(width / 2.0, 2)
+				+ Math.pow(p.getY() - center.getY(), 2) / Math.pow(height / 2.0, 2);
 
-		return result >= 0.90 && result <= 1.1;
+		return result >= 0.9 && result <= 1.1;
 	}
 }

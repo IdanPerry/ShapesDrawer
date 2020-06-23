@@ -19,11 +19,9 @@ public class Triangle extends Polygon {
 	 * Constructs a triangle with the specified upper left point, width, height,
 	 * line thickness, color and a boolean filled with color attribute.
 	 * 
-	 * @param upperLeftX the upper left x coordinate of this triangle
-	 * @param upperLeftY the upper left y coordinate of this triangle
-	 * @param width      the width of this triangle
-	 * @param height     the height of this triangle
-	 * @param thicness	 the thickness of the outline of this triangle 
+	 * @param xPoints 	 the x coordinates of this triangle
+	 * @param yPoints	 the y coordinates of this triangle
+	 * @param thickness	 the thickness of the outline of this triangle
 	 * @param color      the color of this triangle
 	 * @param filled     whether this triangle is filled with color
 	 */

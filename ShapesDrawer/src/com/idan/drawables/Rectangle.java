@@ -25,7 +25,7 @@ public class Rectangle extends BoundedShape {
 	 * @param upperLeftY the upper left y coordinate of this rectangle
 	 * @param width      the width of this rectangle
 	 * @param height     the height of this rectangle
-	 * @param thicness   the thickness of the outline of this rectangle
+	 * @param thickness   the thickness of the outline of this rectangle
 	 * @param color      the color of this rectangle
 	 * @param filled     whether this rectangle is filled with color
 	 */

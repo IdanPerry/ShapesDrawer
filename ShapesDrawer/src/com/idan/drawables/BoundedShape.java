@@ -21,7 +21,7 @@ public abstract class BoundedShape extends Shape {
 	 * @param height     the height of the bounded shape
 	 * @param thickness  the thickness of the outline of this bounded shape
 	 * @param color      the color of the bounded shape
-	 * @param isFilled   whether the bounded shape is filled with color
+	 * @param filled   whether the bounded shape is filled with color
 	 */
 	public BoundedShape(int upperLeftX, int upperLeftY, int width, int height, int thickness, Color color, boolean filled) {
 		super(upperLeftX, upperLeftY, width, height, thickness, color);	

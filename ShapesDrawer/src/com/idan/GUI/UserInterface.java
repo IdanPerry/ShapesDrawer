@@ -311,12 +311,10 @@ public class UserInterface extends JFrame implements ActionListener {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		
+	public void actionPerformed(ActionEvent e) {	
 		selectColor(e);
 		selectShape(e);		
 		selectTool(e);
 		selectEdit(e);
-		
 	}
 }

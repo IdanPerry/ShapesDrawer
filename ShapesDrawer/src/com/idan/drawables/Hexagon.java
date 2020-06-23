@@ -25,7 +25,6 @@ public class Hexagon extends Polygon {
 	 * @param yPoints   an array of the y coordinates
 	 * @param thickness the thickness of the outline of this hexagon
 	 * @param color     the color of this hexagon
-	 * @param thickness the thickness of the outline of this hexagon
 	 * @param filled    whether this hexagon is filled with color
 	 */
 	public Hexagon(int[] xPoints, int[] yPoints, int thickness, Color color, boolean filled) {
