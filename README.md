@@ -1,5 +1,5 @@
 # Shapes Drawer
-This is a mini project i did which was a home assignment durring a Java course. it's A fairly simple drawer, and i took the Windows painter as a reference. i'm still working on this project though because it's really fun and i enjoy working with graphics.
+This is a mini project I did as a home assignment during a Java course. it's A fairly simple application, and I took Windows painter as a reference. I'm still working on this project though because it's really fun and I enjoy working with graphics.
 
 #### Features
 - Various shapes drawings in various colors
