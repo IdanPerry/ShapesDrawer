@@ -1,182 +1,179 @@
 package com.idan.drawables;
 
+import com.idan.interfaces.Adjustable;
 import java.awt.Color;
 
 import com.idan.interfaces.Drawable;
 
 /**
  * This abstract class represents a geometric shape.
- * 
+ *
  * @author Idan Perry
  * @version 03.05.2020
  */
 
-public abstract class Shape implements Drawable {
-	private int x1;
-	private int x2;
-	private int y1;
-	private int y2;
-	private int thickness;
-	private Color color;
+public abstract class Shape implements Drawable, Adjustable {
+    private int originX;
+    private int destX;
+    private int originY;
+    private int destY;
+    private int thickness;
+    private Color color;
 
-	/**
-	 * Constructs a geometric shape using four integers and a color attribute. It's
-	 * up to the inheriting class to decide how to use the four integers to
-	 * construct the wanted shape.
-	 * 
-	 * @param x1        first integer - usualy representing the first x coordinate
-	 * @param y1        second integer - usualy representing the first y coordinate
-	 * @param x2        third integer - usualy representing the second x coordinate
-	 *                  or the width attribute of a two dimensional shape
-	 * @param y2        fourth integer - usualy representing the second y coordinate
-	 *                  or the height attribute of a two dimensional shape
-	 * @param thickness the thickness of the outline of the shape
-	 * @param color     the color attribute of the shape
-	 */
-	public Shape(int x1, int y1, int x2, int y2, int thickness, Color color) {
-		this.x1 = x1;
-		this.y1 = y1;
-		this.x2 = x2;
-		this.y2 = y2;
-		this.thickness = thickness;
-		this.color = color;
-	}
+    /**
+     * Constructs a geometric shape using four integers and a color attribute. It's
+     * up to the inheriting class to decide how to use the four integers to
+     * construct the wanted shape.
+     *
+     * @param originX   first integer - usually representing the first x coordinate
+     * @param originY   second integer - usually representing the first y coordinate
+     * @param destX     third integer - usually representing the second x coordinate
+     *                  or the width attribute of a two dimensional shape
+     * @param destY     fourth integer - usually representing the second y coordinate
+     *                  or the height attribute of a two dimensional shape
+     * @param thickness the thickness of the outline of the shape
+     * @param color     the color attribute of the shape
+     */
+    public Shape(int originX, int originY, int destX, int destY, int thickness, Color color) {
+        this.originX = originX;
+        this.originY = originY;
+        this.destX = destX;
+        this.destY = destY;
+        this.thickness = thickness;
+        this.color = color;
+    }
 
-	/**
-	 * Constructs a geometric shape using a color attribute.
-	 * 
-	 * @param thickness the thickness of the outline of the shape
-	 * @param color		the color attribute of the shape
-	 */
-	public Shape(int thickness, Color color) {
-		this.color = color;
-		this.thickness = thickness;
-	}
+    /**
+     * Constructs a geometric shape with a default size,
+     * color and thickness properties.
+     */
+    public Shape() {
+        originX = 20;
+        originY = 20;
+        destX = 120;
+        destY = 120;
+        color = Color.BLACK;
+        thickness = 1;
+    }
 
-	/**
-	 * Constructs a geometric shape.
-	 */
-	public Shape() {
-	}
+    /**
+     * Returns the first x coordinate
+     *
+     * @return the first x coordinate
+     */
+    public int getOriginX() {
+        return originX;
+    }
 
-	/**
-	 * Returns the first x coordinate
-	 * 
-	 * @return the first x coordinate
-	 */
-	public int getX1() {
-		return x1;
-	}
+    /**
+     * Sets the first x coordinate
+     *
+     * @param originX the first x coordinate
+     */
+    public void setOriginX(int originX) {
+        this.originX = originX;
+    }
 
-	/**
-	 * Sets the first x coordinate
-	 * 
-	 * @param x1 the first x coordinate
-	 */
-	public void setX1(int x1) {
-		this.x1 = x1;
-	}
+    /**
+     * Returns the second x coordinate
+     *
+     * @return the second x coordinate
+     */
+    public int getDestX() {
+        return destX;
+    }
 
-	/**
-	 * Returns the second x coordinate
-	 * 
-	 * @return the second x coordinate
-	 */
-	public int getX2() {
-		return x2;
-	}
+    /**
+     * Sets the second x coordinate
+     *
+     * @param destX the second x coordinate
+     */
+    public void setDestX(int destX) {
+        this.destX = destX;
+    }
 
-	/**
-	 * Sets the second x coordinate
-	 * 
-	 * @param x2 the second x coordinate
-	 */
-	public void setX2(int x2) {
-		this.x2 = x2;
-	}
+    /**
+     * Returns the first y coordinate
+     *
+     * @return the first y coordinate
+     */
+    public int getOriginY() {
+        return originY;
+    }
 
-	/**
-	 * Returns the first y coordinate
-	 * 
-	 * @return the first y coordinate
-	 */
-	public int getY1() {
-		return y1;
-	}
+    /**
+     * Sets the first y coordinate
+     *
+     * @param originY the first y coordinate
+     */
+    public void setOriginY(int originY) {
+        this.originY = originY;
+    }
 
-	/**
-	 * Sets the first y coordinate
-	 * 
-	 * @param y1 the first y coordinate
-	 */
-	public void setY1(int y1) {
-		this.y1 = y1;
-	}
+    /**
+     * Returns the second y coordinate
+     *
+     * @return the second y coordinate
+     */
+    public int getDestY() {
+        return destY;
+    }
 
-	/**
-	 * Returns the second y coordinate
-	 * 
-	 * @return the second y coordinate
-	 */
-	public int getY2() {
-		return y2;
-	}
+    /**
+     * Sets the second y coordinate
+     *
+     * @param destY the second y coordinate
+     */
+    public void setDestY(int destY) {
+        this.destY = destY;
+    }
 
-	/**
-	 * Sets the second y coordinate
-	 * 
-	 * @param y2 the second y coordinate
-	 */
-	public void setY2(int y2) {
-		this.y2 = y2;
-	}
+    /**
+     * Returns the color attribute
+     *
+     * @return the color attribute
+     */
+    public Color getColor() {
+        return color;
+    }
 
-	/**
-	 * Returns the color attribute
-	 * 
-	 * @return the color attribute
-	 */
-	public Color getColor() {
-		return color;
-	}
+    /**
+     * Returns the thickness of the outline of the shape.
+     *
+     * @return the thickness of the outline of the shape
+     */
+    public int getThickness() {
+        return thickness;
+    }
 
-	/**
-	 * Returns the thickness of the outline of the shape.
-	 * 
-	 * @return the thickness of the outline of the shape
-	 */
-	public int getThickness() {
-		return thickness;
-	}
+    /**
+     * Changes the thickness of the outline of the shape.
+     *
+     * @param thickness the thickness of the outline of the shape
+     */
+    public void setThickness(int thickness) {
+        this.thickness = thickness;
+    }
 
-	/**
-	 * Changes the thickness of the outline of the shape.
-	 * 
-	 * @param thickness the thickness of the outline of the shape
-	 */
-	public void setThickness(int thickness) {
-		this.thickness = thickness;
-	}
+    /**
+     * Changes the color attribute of the shape
+     *
+     * @param color the color attribute of the shape
+     */
+    public void setColor(Color color) {
+        this.color = color;
+    }
 
-	/**
-	 * Changes the color attribute of the shape
-	 * 
-	 * @param color the color attribute of the shape
-	 */
-	public void setColor(Color color) {
-		this.color = color;
-	}
-	
-	/**
-	 * Returns true if this shape contains the specified x and y coordinates
-	 * on one of its sides. otherwise returns false.
-	 *  
-	 * @param x the x coordiante
-	 * @param y the y coordiante
-	 * @return true if this shape contains the specified x and y coordinates
-	 * 		   on one of its sides. otherwise returns false
-	 */
-	public boolean hasPoint(int x, int y) {
-		return false;
-	}
+    /**
+     * Returns true if this shape contains the specified x and y coordinates
+     * on one of its sides. otherwise returns false.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @return true if this shape contains the specified x and y coordinates
+     * on one of its sides. otherwise returns false
+     */
+    public boolean hasPoint(int x, int y) {
+        return false;
+    }
 }

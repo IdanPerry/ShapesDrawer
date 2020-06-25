@@ -21,16 +21,16 @@ public class Line extends Shape {
 	 * Constructs a line between two points - source point and destination point,
 	 * with a color and thickness attributes. each point is made of the specified x
 	 * and y coordinates.
-	 * 
-	 * @param sourceX   the x coordinate of the source point
-	 * @param sourceY   the y coordinate of the source point
+	 *
+	 * @param originX   the x coordinate of the source point
+	 * @param originY   the y coordinate of the source point
 	 * @param destX     the x coordinate of the destination point
 	 * @param destY     the y coordinate of the destination point
 	 * @param thickness the thickness of this line
 	 * @param color     the color attribute of this line
 	 */
-	public Line(int sourceX, int sourceY, int destX, int destY, int thickness, Color color) {
-		super(sourceX, sourceY, destX, destY, thickness, color);
+	public Line(int originX, int originY, int destX, int destY, int thickness, Color color) {
+		super(originX, originY, destX, destY, thickness, color);
 	}
 
 	/**
@@ -38,8 +38,8 @@ public class Line extends Shape {
 	 * 
 	 * @return the x coordinate of the source point
 	 */
-	public int getSourceX() {
-		return getX1();
+	public int getOriginX() {
+		return super.getOriginX();
 	}
 
 	/**
@@ -47,8 +47,8 @@ public class Line extends Shape {
 	 * 
 	 * @param sourceX the x coordinate of the source point
 	 */
-	public void setSourceX(int sourceX) {
-		setX1(sourceX);
+	public void setOriginX(int sourceX) {
+		super.setOriginX(sourceX);
 	}
 
 	/**
@@ -56,8 +56,8 @@ public class Line extends Shape {
 	 * 
 	 * @return the y coordinate of the source point
 	 */
-	public int getSourceY() {
-		return getY1();
+	public int getOriginY() {
+		return super.getOriginY();
 	}
 
 	/**
@@ -65,8 +65,8 @@ public class Line extends Shape {
 	 * 
 	 * @param sourceY the y coordinate of the source point
 	 */
-	public void setSourceY(int sourceY) {
-		setY1(sourceY);
+	public void setOriginY(int sourceY) {
+		super.setOriginY(sourceY);
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class Line extends Shape {
 	 * @return the x coordinate of the destination point
 	 */
 	public int getDestX() {
-		return getX2();
+		return super.getDestX();
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class Line extends Shape {
 	 * @param destX the x coordinate of the destination point
 	 */
 	public void setDestX(int destX) {
-		setX2(destX);
+		super.setDestX(destX);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class Line extends Shape {
 	 * @return the y coordinate of the destination point
 	 */
 	public int getDestY() {
-		return getY2();
+		return super.getDestY();
 	}
 
 	/**
@@ -102,12 +102,12 @@ public class Line extends Shape {
 	 * @param destY the y coordinate of the destination point
 	 */
 	public void setDestY(int destY) {
-		setY2(destY);
+		super.setDestY(destY);
 	}
 	
 	@Override
 	public boolean hasPoint(int x, int y) {
-		return Geometry.isBetween(new Point(getX1(), getY1()), new Point(getX2(), getY2()), new Point(x,y));
+		return Geometry.isBetween(new Point(getOriginX(), getOriginY()), new Point(this.getDestX(), this.getDestY()), new Point(x,y));
 	}
 
 	@Override
@@ -115,6 +115,14 @@ public class Line extends Shape {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(getColor());
 		g2.setStroke(new BasicStroke(getThickness()));
-		g2.drawLine(getX1(), getY1(), getX2(), getY2());
+		g2.drawLine(getOriginX(), getOriginY(), getDestX(), getDestY());
+	}
+
+	@Override
+	public void move(Point origin, Point dest, int currentX, int currentY) {
+		setOriginX(currentX + origin.x);
+		setOriginY(currentY + origin.y);
+		setDestX(currentX + dest.x);
+		setDestY(currentY + dest.y);
 	}
 }

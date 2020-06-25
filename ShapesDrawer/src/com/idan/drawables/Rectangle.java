@@ -34,34 +34,6 @@ public class Rectangle extends BoundedShape {
 		super(upperLeftX, upperLeftY, width, height, thickness, color, filled);
 	}
 
-//	@Override
-//	public boolean hasPoint(int x, int y) {
-//		// upper and lower sides, x should be in the width range
-//		if (x >= getX1() - getThickness() && x <= getX1() + getX2() + getThickness()) {
-//			// y should be only in the thickness range either on the top or the bottom sides
-//			if (Math.abs(y - getY1()) <= getThickness() || Math.abs(y - (getY1() + getY2())) <= getThickness())
-//				return true;
-//		}
-//
-//		// right and left sides, y should be in the height range
-//		if (y >= getY1() - getThickness() && y <= getY1() + getY2() + getThickness()) {
-//			// x should be only in the thickness range either on the left or the right sides
-//			if(Math.abs(x - getX1()) <= getThickness() || Math.abs(x - (getX1() + getX2())) <= getThickness())
-//				return true;
-//		}
-//			
-//		return false;
-//	}
-	
-	@Override
-	public boolean hasPoint(int x, int y) {
-		Point leftUpper = new Point(getX1(), getY1());
-		Point rightUpper = new Point(getX1() + getX2(), getY1());
-		Point leftLower = new Point(getX1(), getY1() + getY2());
-		Point rightLower = new Point(getX1() + getX2(),getY1() + getY2());
-		return Geometry.isOnRect(leftUpper, rightUpper, leftLower, rightLower, new Point(x, y));
-	}
-
 	@Override
 	public void draw(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -69,9 +41,14 @@ public class Rectangle extends BoundedShape {
 		g2.setStroke(new BasicStroke(getThickness()));
 
 		if (isFilled())
-			g2.fillRect(getX1(), getY1(), getX2(), getY2());
-
+			g2.fillRect(getOriginX(), getOriginY(), getDestX(), getDestY());
 		else
-			g2.drawRect(getX1(), getY1(), getX2(), getY2());
+			g2.drawRect(getOriginX(), getOriginY(), getDestX(), getDestY());
+	}
+
+	@Override
+	public void move(Point origin, Point dest, int currentX, int currentY) {
+		setOriginX(currentX + origin.x);
+		setOriginY(currentY + origin.y);
 	}
 }

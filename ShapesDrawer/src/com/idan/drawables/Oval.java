@@ -34,7 +34,7 @@ public class Oval extends BoundedShape {
 	}
 	
 	public boolean hasPoint(int x, int y) {
-		return Geometry.isOnEllipse(getX1(), getY1(), getX2(), getY2(), new Point(x, y));
+		return Geometry.isOnEllipse(getOriginX(), getOriginY(), getDestX(), getDestY(), new Point(x, y));
 	}
 	
 	@Override
@@ -44,9 +44,14 @@ public class Oval extends BoundedShape {
 		g2.setStroke(new BasicStroke(getThickness()));
 		
 		if(isFilled())
-			g2.fillOval(getX1(), getY1(), getX2(), getY2());
-			
+			g2.fillOval(getOriginX(), getOriginY(), getDestX(), getDestY());
 		else
-			g2.drawOval(getX1(), getY1(), getX2(), getY2());
+			g2.drawOval(getOriginX(), getOriginY(), getDestX(), getDestY());
+	}
+
+	@Override
+	public void move(Point origin, Point dest, int currentX, int currentY) {
+		setOriginX(currentX + origin.x);
+		setOriginY(currentY + origin.y);
 	}
 }

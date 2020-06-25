@@ -33,17 +33,8 @@ public class RoundRectangle extends BoundedShape {
 	 * @param filled     whether this rectangle is filled with color
 	 */
 	public RoundRectangle(int upperLeftX, int upperLeftY, int width, int height, int thickness, Color color,
-			boolean isFilled) {
-		super(upperLeftX, upperLeftY, width, height, thickness, color, isFilled);
-	}
-	
-	@Override
-	public boolean hasPoint(int x, int y) {
-		Point leftUpper = new Point(getX1(), getY1());
-		Point rightUpper = new Point(getX1() + getX2(), getY1());
-		Point leftLower = new Point(getX1(), getY1() + getY2());
-		Point rightLower = new Point(getX1() + getX2(),getY1() + getY2());
-		return Geometry.isOnRect(leftUpper, rightUpper, leftLower, rightLower, new Point(x, y));
+			boolean filled) {
+		super(upperLeftX, upperLeftY, width, height, thickness, color, filled);
 	}
 
 	@Override
@@ -52,13 +43,17 @@ public class RoundRectangle extends BoundedShape {
 		g2.setColor(getColor());
 		g2.setStroke(new BasicStroke(getThickness()));
 
-		int arc = Math.max(getX2(), getY2()) / 4;
+		int arc = Math.max(getDestX(), getDestY()) / 4;
 		
 		if (isFilled())
-			g2.fillRoundRect(getX1(), getY1(), getX2(), getY2(), arc, arc);
-
+			g2.fillRoundRect(getOriginX(), getOriginY(), getDestX(), getDestY(), arc, arc);
 		else
-			g2.drawRoundRect(getX1(), getY1(), getX2(), getY2(), arc, arc);
+			g2.drawRoundRect(getOriginX(), getOriginY(), getDestX(), getDestY(), arc, arc);
 	}
 
+	@Override
+	public void move(Point origin, Point dest, int currentX, int currentY) {
+		setOriginX(currentX + origin.x);
+		setOriginY(currentY + origin.y);
+	}
 }

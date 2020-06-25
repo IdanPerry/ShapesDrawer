@@ -21,7 +21,8 @@ public enum DrawingTool {
 	 * Constructs an enum selected drawing tool object with the
 	 * associated tool url name (for use with icon attachment).
 	 * 
-	 * @param symbol the shape url name
+	 * @param name the shape url name
+	 * @param index the relative position of this object
 	 */
 	DrawingTool(String name, int index) {
 		this.name = name;

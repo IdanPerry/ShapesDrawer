@@ -1,5 +1,6 @@
 package com.idan.GUI;
 
+import com.idan.drawables.IsoTriangle;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -30,7 +31,7 @@ import com.idan.drawables.Oval;
 import com.idan.drawables.Rectangle;
 import com.idan.drawables.RoundRectangle;
 import com.idan.drawables.Shape;
-import com.idan.drawables.Triangle;
+import com.idan.drawables.RightTriangle;
 
 /**
  * This class represents a canvas for drawings.
@@ -44,8 +45,10 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 	private static final int BASIC_THICK = 1;
 	public static final int OVAL_THICK_FIX = 5;
 	public static final int LINE_THICK_FIX = 2;
+	private static final int MOUSE_POS_X_FIX = 70;
+	private static final int MOUSE_POS_Y_FIX = 15;
 	private static final BufferedImage CURSOR_IMG = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
-	private static final Cursor CROSSHAIR = new Cursor(Cursor.CROSSHAIR_CURSOR);;
+	private static final Cursor CROSSHAIR = new Cursor(Cursor.CROSSHAIR_CURSOR);
 	private static final Cursor BLANK = Toolkit.getDefaultToolkit().createCustomCursor(CURSOR_IMG, new Point(0, 0), "blank");
 	private static final Cursor MOVING = new Cursor(Cursor.MOVE_CURSOR);
 	private static final BasicStroke DASH = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10.0f, new float[] { 10.0f }, 0.0f);
@@ -63,12 +66,13 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 	private int originY;
 	private int currentX;
 	private int currentY;
-	private int changeOriginX;
-	private int changeOriginY;
+	private int changeOriginX;		// x difference of current mouse position and shape origin
+	private int changeOriginY;		// y difference of current mouse position and shape origin
 	private int changeDestX;
 	private int changeDestY;
 	private int thickness;
 	private boolean filled;
+	private boolean pressed;		// mouse pressed state
 	private Mode mode;
 	private Shape dragShape;
 
@@ -204,34 +208,28 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 	 * Creates a new oval on the canvas.
 	 */
 	private void createOval() {
-		shapes.add(new Oval(originX, originY, currentX - originX, currentY - originY, thickness, color, filled));
+		shapes.push(new Oval(originX, originY, currentX - originX, currentY - originY, thickness, color, filled));
 	}
 
 	/*
 	 * Creates a new isosceles triangle on the canvas.
 	 */
 	private void createIsoTriangle() {
-		shapes.push(new Triangle(new int[] { originX + (currentX - originX) / 2, originX, currentX },
-				new int[] { originY, currentY, currentY }, thickness, color, filled));
+		shapes.push(new IsoTriangle(originX, originY, currentX, currentY, thickness, color, filled));
 	}
 
 	/*
 	 * Creates a new right triangle on the canvas.
 	 */
 	private void createRightTriangle() {
-		shapes.push(new Triangle(new int[] { originX, originX, currentX }, new int[] { originY, currentY, currentY },
-				thickness, color, filled));
+		shapes.push(new RightTriangle(originX, originY, currentX, currentY, thickness, color, filled));
 	}
 
 	/*
 	 * Creates a new hexagon on the canvas.
 	 */
 	private void createHexagon() {
-		int[] points = initHexagonPoints();
-
-		shapes.push(new Hexagon(new int[] { points[0], points[1], points[2], points[1], points[0], points[3] },
-				new int[] { points[4], points[4], points[5], points[6], points[6], points[5] }, thickness, color,
-				filled));
+		shapes.push(new Hexagon(originX, originY, currentX, currentY, thickness, color, filled));
 	}
 
 	/*
@@ -280,6 +278,8 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 	 * Shows the outline pulling as a dashed line.
 	 */
 	private void drawPullingOutline(Graphics2D g2) {
+		g2.setStroke(DASH);
+
 		switch (selectedShape) {
 		case RECTANGLE:
 			g2.drawRect(originX, originY, currentX - originX, currentY - originY);
@@ -315,8 +315,6 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 			break;
 
 		case FREE_HAND:
-			showDotCursor(g2);
-			// draw
 			if (freeHand != null)
 				freeHand.draw(g2);
 			break;
@@ -390,30 +388,14 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 				
 				else {
 					dragShape = shape;
-					changeOriginX = shape.getX1() - currentX;
-					changeOriginY = shape.getY1() - currentY;
-					changeDestX = shape.getX2() - currentX;
-					changeDestY = shape.getY2() - currentY;
-					
+					changeOriginX = shape.getOriginX() - currentX;
+					changeOriginY = shape.getOriginY() - currentY;
+					changeDestX = shape.getDestX() - currentX;
+					changeDestY = shape.getDestY() - currentY;
 					setCursor(MOVING);
 				}
 				
 				break;
-			}
-		}
-	}
-
-	/*
-	 * Drags the drawing to the current mouse cursor position.
-	 */
-	private void drag() {
-		if (dragShape != null) {
-			dragShape.setX1(currentX + changeOriginX);
-			dragShape.setY1(currentY + changeOriginY);
-			
-			if(dragShape instanceof Line) {
-				dragShape.setX2(currentX + changeDestX);
-				dragShape.setY2(currentY + changeDestY);
 			}
 		}
 	}
@@ -423,24 +405,28 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(chalkboard, 0, 0, null);
-
+		g2.setColor(CustomColor.WHITE);
 		// enable antialiasing
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		// draw current mouse position coordinates
+		g2.drawString(currentX + "x" + currentY + "px", getWidth() - MOUSE_POS_X_FIX, getHeight() - MOUSE_POS_Y_FIX);
 		redraw(g2);
 
 		if (mode == Mode.DRAW) {
 			g2.setColor(color);
-			g2.setStroke(DASH);
-			drawPullingOutline(g2);
+			showDotCursor(g2);
+			if(pressed)
+				drawPullingOutline(g2);
 		}
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		pressed = true;
 		// prevent drawing the path from last recorded point to the current
 		currentPoint = null;
 
-		// collect initail coordinates
+		// collect initial coordinates
 		currentX = originX = e.getX();
 		currentY = originY = e.getY();
 
@@ -467,7 +453,8 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 		switch (mode) {
 		case SELECT:
-			drag();
+			if (dragShape != null)
+				dragShape.move(new Point(changeOriginX, changeOriginY), new Point(changeDestX, changeDestY), currentX, currentY);
 			break;
 
 		case DRAW:
@@ -481,6 +468,8 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		pressed = false;
+
 		switch (mode) {
 		case SELECT:
 			dragShape = null;
@@ -521,15 +510,9 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if (mode == Mode.SELECT)
-			return;
-
-		// update cursor position to show a drawing dot
-		if (selectedShape == SelectedShape.FREE_HAND) {
-			currentX = e.getX();
-			currentY = e.getY();
-			repaint();
-		}
+		currentX = e.getX();
+		currentY = e.getY();
+		repaint();
 	}
 
 	@Override

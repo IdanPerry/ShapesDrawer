@@ -7,6 +7,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -32,7 +34,6 @@ import com.idan.constants.SelectedShape;
 @SuppressWarnings("serial")
 public class UserInterface extends JFrame implements ActionListener {
 	private static final int WIDTH = 1100, HEIGHT = 700;
-	private static final int MAX_COLORS = 36;
 	private static final int THICKNESS_LEVELS = 5;
 	private static final Dimension MIN_SIZE = new Dimension(730, 500);
 	private static final Dimension COLOR_BTN_SIZE = new Dimension(20, 20);
@@ -69,7 +70,7 @@ public class UserInterface extends JFrame implements ActionListener {
 		mainUiPanel = new JPanel();
 		editPanel = new JPanel(new GridLayout(2, 0, 2, 2));
 		shapesPanel = new JPanel(new GridLayout(2, 4, 2, 2));
-		colorsPanel = new JPanel(new GridLayout(3, 12, 2, 2));
+		colorsPanel = new JPanel(new GridLayout(5, 12, 2, 2));
 		toolsPanel = new JPanel(new GridLayout(2, 0, 2, 2));
 		canvas = new Canvas();
 
@@ -164,17 +165,19 @@ public class UserInterface extends JFrame implements ActionListener {
 	 * button.
 	 */
 	private void initColors() {
-		colorsBtn = new JButton[MAX_COLORS];
-		
-		for (int i = 0; i < MAX_COLORS; i++) {
+		colorsBtn = new JButton[CustomColor.COLORS.length];
+
+		for (int i = 0; i < CustomColor.COLORS.length; i++) {
 			colorsBtn[i] = new JButton();
 			colorsBtn[i].setPreferredSize(COLOR_BTN_SIZE);
 			colorsBtn[i].setBackground(CustomColor.COLORS[i]);
 			colorsBtn[i].setContentAreaFilled(false);
 			colorsBtn[i].setOpaque(true);
-			colorsBtn[i].setBorder(BorderFactory.createLineBorder(CustomColor.LIGHTER_GRAY));
+			colorsBtn[i].setBorder(BorderFactory.createLineBorder(CustomColor.LIGHT_GRAY));
 			colorsBtn[i].addActionListener(this);
 			colorsPanel.add(colorsBtn[i]);
+
+			colorsBtn[i].addMouseListener(new MouseHandler());
 		}
 	}
 
@@ -280,7 +283,7 @@ public class UserInterface extends JFrame implements ActionListener {
 	 * Check if one of the color selection buttons was clicked.
 	 */
 	private void selectColor(ActionEvent e) {
-		for (int i = 0; i < MAX_COLORS; i++) {
+		for (int i = 0; i < CustomColor.COLORS.length; i++) {
 			if (e.getSource() == colorsBtn[i]) {
 				canvas.setColor(CustomColor.COLORS[i]);
 				selectThickness.setForeground(CustomColor.COLORS[i]);
@@ -316,5 +319,23 @@ public class UserInterface extends JFrame implements ActionListener {
 		selectShape(e);		
 		selectTool(e);
 		selectEdit(e);
+	}
+
+	private class MouseHandler extends MouseAdapter{
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			for(JButton btn : colorsBtn) {
+				if(e.getSource() == btn)
+					btn.setBorder(BorderFactory.createLineBorder(CustomColor.WHITE));
+			}
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			for(JButton btn : colorsBtn) {
+				if(e.getSource() == btn)
+					btn.setBorder(BorderFactory.createLineBorder(CustomColor.LIGHT_GRAY));
+			}
+		}
 	}
 }

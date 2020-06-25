@@ -3,7 +3,7 @@ package com.idan.interfaces;
 import java.awt.Graphics;
 
 /**
- * This interfae gives the object of the implementing class to be able to draw itself.
+ * This interface gives the object of the implementing class to be able to draw itself.
  * 
  * @author Idan Perry
  * @version 22.06.2020

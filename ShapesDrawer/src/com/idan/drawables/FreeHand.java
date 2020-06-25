@@ -108,4 +108,9 @@ public class FreeHand extends Shape implements Drawable {
 				shape.draw(g2);
 		}
 	}
+
+	@Override
+	public void move(Point origin, Point dest, int currentX, int currentY) {
+
+	}
 }

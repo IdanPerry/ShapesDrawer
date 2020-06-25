@@ -1,5 +1,6 @@
 package com.idan.GUI;
 
+import com.idan.drawables.BoundedShape;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,6 +10,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -26,10 +28,10 @@ import com.idan.drawables.Shape;
 
 @SuppressWarnings("serial")
 public class DrawingEditor extends JFrame implements ActionListener {
-	private static final int WIDTH = 250;
-	private static final int HEIGHT = 180;
+	private static final int WIDTH = 270;
+	private static final int HEIGHT = 210;
 	private static final int SIZE_FIELDS = 2;
-	private static final int COLOR_FIELDS = 4;
+	private static final int COLOR_FIELDS = 5;
 	private static final Dimension FIELD_SIZE = new Dimension(50, 22); 
 	private static final Dimension BTN_SIZE = new Dimension(80, 25); 
 	private static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 13);
@@ -43,7 +45,9 @@ public class DrawingEditor extends JFrame implements ActionListener {
 	private JLabel[] sizeLabels;
 	private JLabel[] colorLabels;
 	private JTextField[] sizeFields;
-	private JTextField[] colorFields; 
+	private JTextField[] colorFields;
+	private JLabel fillLabel;
+	private JCheckBox fillCheck;
 	private CustomButton submitBtn;
 	private final Canvas canvas;
 	private final Shape shape;
@@ -107,8 +111,8 @@ public class DrawingEditor extends JFrame implements ActionListener {
 		sizeLabels[0].setText("Width: ");
 		sizeLabels[1].setText("Height: ");
 		
-		sizeFields[0].setText(shape.getX2() + "");
-		sizeFields[1].setText(shape.getY2() + "");
+		sizeFields[0].setText(shape.getDestX() + "");
+		sizeFields[1].setText(shape.getDestY() + "");
 	}
 	
 	/*
@@ -117,8 +121,10 @@ public class DrawingEditor extends JFrame implements ActionListener {
 	private void initColorComponents() {
 		colorLabels = new JLabel[COLOR_FIELDS];
 		colorFields = new JTextField[COLOR_FIELDS];
+		fillLabel = new JLabel("Fill color: ");
+		fillCheck = new JCheckBox();
 		
-		for(int i = 0; i < COLOR_FIELDS; i++) {
+		for(int i = 0; i < COLOR_FIELDS - 1; i++) {
 			// labels
 			colorLabels[i] = new JLabel();
 			colorLabels[i].setForeground(CustomColor.WHITE);
@@ -134,7 +140,20 @@ public class DrawingEditor extends JFrame implements ActionListener {
 			colorGridPanel.add(colorLabels[i]);
 			colorGridPanel.add(colorFields[i]);
 		}
-		
+
+		// check box
+		fillLabel.setForeground(CustomColor.WHITE);
+		fillLabel.setFont(LABEL_FONT);
+		fillCheck.setBackground(CustomColor.LIGHT_BLACK);
+
+		if(shape instanceof BoundedShape)
+			fillCheck.setSelected(((BoundedShape)shape).isFilled());
+		else
+			fillCheck.setEnabled(false);
+
+		colorGridPanel.add(fillLabel);
+		colorGridPanel.add(fillCheck);
+
 		colorLabels[0].setText("Red: ");
 		colorLabels[1].setText("Green: ");
 		colorLabels[2].setText("Blue: ");
@@ -177,17 +196,17 @@ public class DrawingEditor extends JFrame implements ActionListener {
 	}
 	
 	/*
-	 * Applys the size properties from the user input.
+	 * Apply the size properties from the user input.
 	 */
 	private void applyNewSize() {
 		int width = Integer.parseInt(sizeFields[0].getText());
 		int height = Integer.parseInt(sizeFields[1].getText());
-		shape.setX2(width);
-		shape.setY2(height);
+		shape.setDestX(width);
+		shape.setDestY(height);
 	}
 	
 	/*
-	 * Applys the color properties from the user input.
+	 * Apply the color properties from the user input.
 	 */
 	private void applyNewColor() {
 		int r = Integer.parseInt(colorFields[0].getText());
@@ -197,6 +216,9 @@ public class DrawingEditor extends JFrame implements ActionListener {
 		
 		Color color = new Color(r, g, b, alpha);
 		shape.setColor(color);
+
+		if(shape instanceof BoundedShape)
+			((BoundedShape)shape).setFilled(fillCheck.isSelected());
 	}
 
 	@Override
