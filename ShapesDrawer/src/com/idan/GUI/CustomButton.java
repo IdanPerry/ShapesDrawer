@@ -29,19 +29,12 @@ public class CustomButton extends JButton implements MouseListener {
 	
 	/**
 	 * Constructs a modified JButton component with an associated icon name which
-	 * is part of the icon url path. will throw IOException if the icon wasn't found
-	 * in the resources folder.
+	 * is part of the icon url path.
 	 * 
 	 * @param iconPath the associated icon name
-	 * @throws IOException if the associated icon wasn't found in the resources folder
 	 */
-	public CustomButton(String iconPath) {	
-		setPreferredSize(SIZE);
-		setBackground(CustomColor.LIGHT_GRAY);
-		setBorder(new CompoundBorder(getBorder(), BORDER));
-		setContentAreaFilled(false);
-		setOpaque(true);
-		addMouseListener(this);
+	public CustomButton(String iconPath) {
+		this();
 		
 		try {
 			ImageIcon icon = new ImageIcon(ImageIO.read(getClass().getResourceAsStream("/" + iconPath + ".png")));

@@ -42,8 +42,6 @@ public abstract class BoundedShape extends Shape {
      */
     public BoundedShape() {
         super();
-        width = 100;
-        height = 100;
         filled = false;
     }
 

@@ -63,12 +63,7 @@ public abstract class Shape implements Drawable, Adjustable, Cloneable {
      * color and thickness properties.
      */
     public Shape() {
-        originX = 20;
-        originY = 20;
-        destX = 120;
-        destY = 120;
-        color = Color.BLACK;
-        thickness = 1;
+        this(20, 20, 120, 120, 1, Color.BLACK);
     }
 
     /**

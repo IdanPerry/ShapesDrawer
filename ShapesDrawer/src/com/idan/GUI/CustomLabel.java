@@ -13,9 +13,8 @@ public class CustomLabel extends JLabel {
     }
 
     public CustomLabel(String text) {
-        super(text);
-        setFont(FONT);
-        setForeground(CustomColor.LIGHT_GRAY);
+        this();
+        setText(text);
     }
 
     /**

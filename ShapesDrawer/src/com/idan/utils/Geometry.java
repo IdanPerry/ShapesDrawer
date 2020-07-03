@@ -11,6 +11,10 @@ import java.awt.Point;
  */
 
 public class Geometry {
+    private static final double POINT_OFFSET = 0.1;
+    private static final double INSIDE_ELLIPSE_OFFSET = 0.9;
+    private static final double OUTSIDE_ELLIPSE_OFFSET = 1.1;
+
     /**
      * Returns the distance between two given points.
      *
@@ -32,7 +36,7 @@ public class Geometry {
      * @return true if point c is between points a and b, false otherwise
      */
     public static boolean isBetween(Point a, Point b, Point c) {
-        return Math.abs(distance(a, c) + distance(c, b) - distance(a, b)) <= 0.1;
+        return Math.abs(distance(a, c) + distance(c, b) - distance(a, b)) <= POINT_OFFSET;
     }
 
     /**
@@ -87,12 +91,12 @@ public class Geometry {
         double result = Math.pow(p.getX() - center.getX(), 2) / Math.pow(width / 2.0, 2)
                 + Math.pow(p.getY() - center.getY(), 2) / Math.pow(height / 2.0, 2);
 
-        return result >= 0.9 && result <= 1.1;
+        return result >= INSIDE_ELLIPSE_OFFSET && result <= OUTSIDE_ELLIPSE_OFFSET;
     }
 
     public static boolean isOnPolygon(Point[] points, Point p) {
         for(int i = 0; i < points.length - 1; i++) {
-            if(isBetween(points[i], points[i+1], p))
+            if(isBetween(points[i], points[i + 1], p))
                 return true;
         }
 
