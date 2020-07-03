@@ -9,11 +9,12 @@ import java.awt.Graphics;
  * @version 22.06.2020
  */
 
+@FunctionalInterface
 public interface Drawable {
 	/**
 	 * Drawing using Graphics object
 	 * 
 	 * @param g the Graphics object
 	 */
-	public abstract void draw(Graphics g);
+	public void draw(Graphics g);
 }

@@ -14,9 +14,10 @@ public enum SelectedShape {
 	OVAL("oval", 2),
 	ISO_TRIANGLE("iso_triangle", 3),
 	RIGHT_TRIANGLE("triangle", 4),
-	HEXAGON("hexagon", 5),
-	LINE("line", 6),
-	FREE_HAND("draw", 7);
+	PENTAGON("pentagon", 5),
+	HEXAGON("hexagon", 6),
+	LINE("line", 7),
+	FREE_DRAW("draw", 8);
 	
 	private final String symbol;
 	private final int index;

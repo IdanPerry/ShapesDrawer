@@ -4,6 +4,7 @@ import com.idan.interfaces.Adjustable;
 import java.awt.Color;
 
 import com.idan.interfaces.Drawable;
+import java.awt.Graphics;
 
 /**
  * This abstract class represents a geometric shape.
@@ -12,7 +13,7 @@ import com.idan.interfaces.Drawable;
  * @version 03.05.2020
  */
 
-public abstract class Shape implements Drawable, Adjustable {
+public abstract class Shape implements Drawable, Adjustable, Cloneable {
     private int originX;
     private int destX;
     private int originY;
@@ -41,6 +42,20 @@ public abstract class Shape implements Drawable, Adjustable {
         this.destY = destY;
         this.thickness = thickness;
         this.color = color;
+    }
+
+    /**
+     * Constructs a copy of the specified shape object.
+     *
+     * @param shape the shape object to copy
+     */
+    public Shape(Shape shape) {
+        this.originX = shape.originX;
+        this.originY = shape.originY;
+        this.destX = shape.destX;
+        this.destY = shape.destY;
+        this.thickness = shape.thickness;
+        this.color = shape.color;
     }
 
     /**
@@ -175,5 +190,10 @@ public abstract class Shape implements Drawable, Adjustable {
      */
     public boolean hasPoint(int x, int y) {
         return false;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

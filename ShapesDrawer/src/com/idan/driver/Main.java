@@ -1,5 +1,7 @@
 package com.idan.driver;
 
+import java.awt.Color;
+import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -15,15 +17,13 @@ import com.idan.GUI.UserInterface;
 
 public class Main {
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {	
-			try {
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-					| UnsupportedLookAndFeelException e) {
-				e.printStackTrace();
-			}
-				
-			new UserInterface();
-		});	
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
+
+		SwingUtilities.invokeLater(UserInterface::new);
 	}
 }

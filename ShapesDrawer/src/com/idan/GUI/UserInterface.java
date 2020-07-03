@@ -1,6 +1,7 @@
 package com.idan.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -11,11 +12,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -23,6 +28,8 @@ import com.idan.constants.CustomColor;
 import com.idan.constants.DrawingTool;
 import com.idan.constants.Mode;
 import com.idan.constants.SelectedShape;
+import javax.swing.plaf.basic.BasicToolBarUI;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 /**
  * This class represents the user interface for the drawing application.
@@ -75,7 +82,6 @@ public class UserInterface extends JFrame implements ActionListener {
 		canvas = new Canvas();
 
 		// frame properties
-		setTitle("Shapes Drawer");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(WIDTH, HEIGHT);
 		setMinimumSize(MIN_SIZE);
@@ -175,9 +181,8 @@ public class UserInterface extends JFrame implements ActionListener {
 			colorsBtn[i].setOpaque(true);
 			colorsBtn[i].setBorder(BorderFactory.createLineBorder(CustomColor.LIGHT_GRAY));
 			colorsBtn[i].addActionListener(this);
-			colorsPanel.add(colorsBtn[i]);
-
 			colorsBtn[i].addMouseListener(new MouseHandler());
+			colorsPanel.add(colorsBtn[i]);
 		}
 	}
 
@@ -220,7 +225,7 @@ public class UserInterface extends JFrame implements ActionListener {
 		shapesBtn[SelectedShape.RIGHT_TRIANGLE.getIndex()].setToolTipText("Paint a right triangle");
 		shapesBtn[SelectedShape.HEXAGON.getIndex()].setToolTipText("paint an hexagon");
 		shapesBtn[SelectedShape.LINE.getIndex()].setToolTipText("draw a line");
-		shapesBtn[SelectedShape.FREE_HAND.getIndex()].setToolTipText("free hand drawing");
+		shapesBtn[SelectedShape.FREE_DRAW.getIndex()].setToolTipText("free hand drawing");
 		fillColorBtn.setToolTipText("Fill with color");
 		undoBtn.setToolTipText("Undo last painted shape");
 		redoBtn.setToolTipText("Repaint last deleted shape");

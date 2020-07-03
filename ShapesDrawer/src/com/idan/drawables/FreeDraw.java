@@ -18,7 +18,7 @@ import com.idan.interfaces.Drawable;
  * @version 03.05.2020
  */
 
-public class FreeHand extends Shape implements Drawable {
+public class FreeDraw extends Shape implements Drawable {
 	private static final int DRAW_OFFSET = 5;
 	private static final int BUFFER_SIZE = 1000;
 	public static final int AIRBRUSH_SPREAD = 5;
@@ -35,7 +35,7 @@ public class FreeHand extends Shape implements Drawable {
 	/**
 	 * Constructs a clean free hand drawing object.
 	 */
-	public FreeHand() {
+	public FreeDraw() {
 		drawing = new Shape[BUFFER_SIZE];
 		random = new Random();
 	}

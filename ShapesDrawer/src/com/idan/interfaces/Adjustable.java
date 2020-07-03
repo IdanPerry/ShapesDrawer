@@ -11,9 +11,9 @@ import java.awt.Point;
  */
 
 public interface Adjustable {
-    public abstract void move(Point origin, Point dest,  int currentX, int currentY);
+    public void move(Point origin, Point dest,  int currentX, int currentY);
 
-//    public abstract void resize();
+//    public void resize();
 
-//    public abstract void reshape();
+//    public void reshape();
 }
