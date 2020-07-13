@@ -1,7 +1,6 @@
 package com.idan.GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -12,15 +11,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -28,8 +20,6 @@ import com.idan.constants.CustomColor;
 import com.idan.constants.DrawingTool;
 import com.idan.constants.Mode;
 import com.idan.constants.SelectedShape;
-import javax.swing.plaf.basic.BasicToolBarUI;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 /**
  * This class represents the user interface for the drawing application.
@@ -41,14 +31,10 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 @SuppressWarnings("serial")
 public class UserInterface extends JFrame implements ActionListener {
 	private static final int WIDTH = 1100, HEIGHT = 700;
-	private static final int THICKNESS_LEVELS = 5;
 	private static final Dimension MIN_SIZE = new Dimension(730, 500);
 	private static final Dimension COLOR_BTN_SIZE = new Dimension(20, 20);
-	private static final Dimension COMBO_BOX_SIZE = new Dimension(50, 30);
-	private static final EmptyBorder PANEL_BORDER = new EmptyBorder(10, 10, 10, 10);	
-	private static final String[] THICKNESS_VISUAL = { "<html><font size=1>\u25CF</html>",
-			"<html><font size=2>\u25CF</html>", "<html><font size=4>\u25CF</html>", "<html><font size=6>\u25CF</html>",
-			"<html><font size=8>\u25CF</html>" };
+	private static final Dimension BTN_CUSTOM_SIZE = new Dimension(50, 30);
+	private static final EmptyBorder PANEL_BORDER = new EmptyBorder(10, 10, 10, 10);
 
 	private final JPanel mainUiPanel;
 	private final JPanel colorsPanel;
@@ -64,10 +50,11 @@ public class UserInterface extends JFrame implements ActionListener {
 	private CustomButton redoBtn;
 	private CustomButton clearBtn;
 	private CustomButton modeBtn;
-	private JComboBox<String> selectThickness;
+	private CustomButton selectThickness;
 
 	private boolean filled;
 	private Mode mode;
+	private final ThicknessSelect thicknessSelect;
 
 	/**
 	 * Constructs a user interface panel to contain all buttons and controllers for
@@ -80,6 +67,8 @@ public class UserInterface extends JFrame implements ActionListener {
 		colorsPanel = new JPanel(new GridLayout(5, 12, 2, 2));
 		toolsPanel = new JPanel(new GridLayout(2, 0, 2, 2));
 		canvas = new Canvas();
+		mode = Mode.DRAW;
+		thicknessSelect = ThicknessSelect.getInstance();
 
 		// frame properties
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,9 +84,8 @@ public class UserInterface extends JFrame implements ActionListener {
 		initDrawingTools();
 		setToolTips();
 		validate();
+		thicknessSelect.initWindow(selectThickness, canvas);
 		setVisible(true);
-		
-		mode = Mode.DRAW;
 	}
 
 	/*
@@ -206,16 +194,14 @@ public class UserInterface extends JFrame implements ActionListener {
 		toolsPanel.add(fillColorBtn);
 
 		// thickness select
-		selectThickness = new JComboBox<String>(THICKNESS_VISUAL);
-		selectThickness.setPreferredSize(COMBO_BOX_SIZE);
-		selectThickness.setMaximumRowCount(THICKNESS_LEVELS);
-		((JLabel) selectThickness.getRenderer()).setHorizontalAlignment(SwingConstants.CENTER);
+		selectThickness = new CustomButton("one");
 		selectThickness.addActionListener(this);
+		selectThickness.setPreferredSize(BTN_CUSTOM_SIZE);
 		toolsPanel.add(selectThickness);
 	}
 
 	/*
-	 * Set tool tips text for all buttons and controlers in this interface.
+	 * Set tool tips text for all buttons and controllers in this interface.
 	 */
 	private void setToolTips() {
 		shapesBtn[SelectedShape.RECTANGLE.getIndex()].setToolTipText("Paint a rectangle");
@@ -265,12 +251,8 @@ public class UserInterface extends JFrame implements ActionListener {
 			}
 
 			// line thickness selection
-		} else if (e.getSource() == selectThickness) {
-			for (int i = 0; i < THICKNESS_LEVELS; i++) {
-				if (selectThickness.getSelectedIndex() == i)
-					canvas.setThickness(i + 1);
-			}
-		}
+		} else if (e.getSource() == selectThickness)
+			thicknessSelect.setVisible(true);
 	
 		// drawing tools selection
 		for (DrawingTool tool : DrawingTool.values()) {

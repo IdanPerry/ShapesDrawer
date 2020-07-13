@@ -40,7 +40,7 @@ public class DrawingEditor extends JFrame implements ActionListener, DocumentLis
     private static final Dimension BTN_SIZE = new Dimension(80, 25);
     private static final Font BTN_FONT = new Font("SansSerif", Font.BOLD, 13);
 
-    private static DrawingEditor instance;
+    private static final DrawingEditor instance;
     private JPanel sizeFlowPanel;
     private JPanel sizeGridPanel;
     private JPanel colorFlowPanel;
@@ -116,8 +116,12 @@ public class DrawingEditor extends JFrame implements ActionListener, DocumentLis
     public void setSize() {
         // init width and height components for bounded shapes
         if (drawing instanceof BoundedShape) {
+            sizeLabels[0].setActive(true);
+            sizeLabels[1].setActive(true);
             sizeLabels[2].setActive(false);
+            sizeFields[0].setEnabled(true);
             sizeFields[0].setText(drawing.getDestX() + "");
+            sizeFields[1].setEnabled(true);
             sizeFields[1].setText(drawing.getDestY() + "");
             sizeFields[2].setEnabled(false);
 
@@ -125,15 +129,20 @@ public class DrawingEditor extends JFrame implements ActionListener, DocumentLis
         } else {
             sizeLabels[0].setActive(false);
             sizeLabels[1].setActive(false);
+            sizeLabels[2].setActive(true);
             sizeFields[0].setEnabled(false);
             sizeFields[1].setEnabled(false);
+            sizeFields[2].setEnabled(true);
             sizeFields[2].setText((int) Geometry.distance(new Point(drawing.getOriginX(), drawing.getOriginY()),
                     new Point(drawing.getDestX(), drawing.getDestY())) + "");
         }
+
+        // init outline thickness
+        sizeFields[3].setText(drawing.getThickness() + "");
     }
 
     /**
-     * init fields with colors
+     * Initializes the color fields with the RGB values.
      */
     public void setColor() {
         colorFields[0].setText(drawing.getColor().getRed() + "");
@@ -145,6 +154,7 @@ public class DrawingEditor extends JFrame implements ActionListener, DocumentLis
             fillCheck.setSelected(((BoundedShape) drawing).isFilled());
         } else {
             fillLabel.setActive(false);
+            fillCheck.setSelected(false);
             fillCheck.setEnabled(false);
             ratioLabel.setActive(false);
             ratioCheck.setEnabled(false);
@@ -265,8 +275,10 @@ public class DrawingEditor extends JFrame implements ActionListener, DocumentLis
                 drawing.setDestY(height);
             } else {
                 int length = Integer.parseInt(sizeFields[2].getText());
-
             }
+
+            int thickness = Integer.parseInt(sizeFields[3].getText());
+            drawing.setThickness(thickness);
         } catch (NumberFormatException e) {
             // do nothing
         }
@@ -276,13 +288,17 @@ public class DrawingEditor extends JFrame implements ActionListener, DocumentLis
      * Apply the color properties from the user input.
      */
     private void applyNewColor() {
-        int r = Integer.parseInt(colorFields[0].getText());
-        int g = Integer.parseInt(colorFields[1].getText());
-        int b = Integer.parseInt(colorFields[2].getText());
-        int alpha = Integer.parseInt(colorFields[3].getText());
+        try {
+            int r = Integer.parseInt(colorFields[0].getText());
+            int g = Integer.parseInt(colorFields[1].getText());
+            int b = Integer.parseInt(colorFields[2].getText());
+            int alpha = Integer.parseInt(colorFields[3].getText());
 
-        Color color = new Color(r, g, b, alpha);
-        drawing.setColor(color);
+            Color color = new Color(r, g, b, alpha);
+            drawing.setColor(color);
+        } catch(NumberFormatException e) {
+            // do nothing
+        }
 
         if (drawing instanceof BoundedShape)
             ((BoundedShape) drawing).setFilled(fillCheck.isSelected());

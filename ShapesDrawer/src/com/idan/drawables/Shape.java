@@ -50,12 +50,7 @@ public abstract class Shape implements Drawable, Adjustable, Cloneable {
      * @param shape the shape object to copy
      */
     public Shape(Shape shape) {
-        this.originX = shape.originX;
-        this.originY = shape.originY;
-        this.destX = shape.destX;
-        this.destY = shape.destY;
-        this.thickness = shape.thickness;
-        this.color = shape.color;
+        this(shape.originX, shape.originY, shape.destX, shape.destY, shape.thickness, shape.color);
     }
 
     /**

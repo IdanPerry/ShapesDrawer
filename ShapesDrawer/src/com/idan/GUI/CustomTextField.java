@@ -16,4 +16,11 @@ public class CustomTextField extends JTextField {
         setCaretColor(CustomColor.LIGHT_GRAY);
         setFont(FONT);
     }
+
+    @Override
+    public void setEnabled(boolean bool) {
+        super.setEnabled(bool);
+        if(!bool)
+            setText("");
+    }
 }

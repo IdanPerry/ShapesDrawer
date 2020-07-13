@@ -27,7 +27,7 @@ public class Geometry {
     }
 
     /**
-     * Returns true if a given point c is between points a and b. Returns false
+     * Returns true if the given point c is between points a and b. Returns false
      * otherwise.
      *
      * @param a point a
@@ -40,7 +40,7 @@ public class Geometry {
     }
 
     /**
-     * Returns true if a given point is in the boundaries of a given rectangle
+     * Returns true if the given point is in the boundaries of a given rectangle
      * perimeter. Returns false otherwise.
      *
      * @param upperLeft  the upper left point of the rectangle
@@ -72,7 +72,7 @@ public class Geometry {
     }
 
     /**
-     * Returns true if a given point is in the boundaries of a given ellipse
+     * Returns true if the given point is in the boundaries of a given ellipse
      * circumference. Returns false otherwise.
      *
      * @param x      the x coordinate of the upper left point of the rectangle
@@ -94,9 +94,19 @@ public class Geometry {
         return result >= INSIDE_ELLIPSE_OFFSET && result <= OUTSIDE_ELLIPSE_OFFSET;
     }
 
+    /**
+     * Returns true if the given point is in the boundaries of a given
+     * polygon perimeter. returns false otherwise.
+     *
+     * @param points an array of points defining the polygon. the number of
+     *               points should be n+1, where n is the number of edges.
+     * @param p      the point to determine if its in the polygon perimeter boundaries
+     * @return true if the given point is in the boundaries of a given polygon perimeter.
+     * returns false otherwise.
+     */
     public static boolean isOnPolygon(Point[] points, Point p) {
-        for(int i = 0; i < points.length - 1; i++) {
-            if(isBetween(points[i], points[i + 1], p))
+        for (int i = 0; i < points.length - 1; i++) {
+            if (isBetween(points[i], points[i + 1], p))
                 return true;
         }
 

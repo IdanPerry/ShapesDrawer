@@ -35,7 +35,7 @@ public abstract class Polygon extends BoundedShape {
      * Constructs a polygon with a default size,
      * color and thickness properties.
      */
-    public Polygon(){
+    public Polygon() {
         super();
     }
 
@@ -77,10 +77,13 @@ public abstract class Polygon extends BoundedShape {
 
     @Override
     public boolean hasPoint(int x, int y) {
+        // init n+1 points. the last point equals the 1st and closes
+        // the shape's perimeter.
         Point[] points = new Point[xPoints.length + 1];
         for (int i = 0; i < xPoints.length; i++)
             points[i] = new Point(xPoints[i], yPoints[i]);
 
+        // the n-th+1 point
         points[xPoints.length] = points[0];
         return Geometry.isOnPolygon(points, new Point(x, y));
     }

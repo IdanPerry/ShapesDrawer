@@ -24,8 +24,8 @@ public class FreeDraw extends Shape implements Drawable {
 	public static final int AIRBRUSH_SPREAD = 5;
 	public static final int AIRBRUSH_AMOUNT = 4;
 	public static final int ARTISTIC_DENSE = 3;
-	public static final int HORIZONTAL_ARTISTIC_ANGLE = 7;
-	public static final int VERTICAL_ARTISTIC_ANGLE = 4;
+	public static final int HORIZONTAL_ARTISTIC_ANGLE = 3;
+	public static final int VERTICAL_ARTISTIC_ANGLE = 2;
 
 	private final Shape[] drawing;
 	private final Random random;

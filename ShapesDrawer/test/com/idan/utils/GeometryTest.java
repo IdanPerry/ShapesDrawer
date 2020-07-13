@@ -1,5 +1,6 @@
 package com.idan.utils;
 
+import com.idan.drawables.Hexagon;
 import com.idan.drawables.Oval;
 import com.idan.drawables.Rectangle;
 import com.idan.drawables.Shape;
@@ -13,11 +14,14 @@ public class GeometryTest {
     private Shape shape;
     private Rectangle rect;
     private Oval oval;
+    private Hexagon hexagon;
 
     @Before
     public void setUp() throws Exception {
-        rect = new Rectangle(10, 10, 100, 100, 0, null, false);
-        oval= new Oval(10, 10, 100, 100, 0, null, false);
+        rect = new Rectangle(0, 0, 100, 100, 0, null, false);
+        oval= new Oval(0, 0, 100, 100, 0, null, false);
+        hexagon = new Hexagon(0, 0, 100, 100, 0, null, false);
+
         shape = new Shape() {
             @Override
             public void move(Point origin, Point dest, int currentX, int currentY) {
@@ -64,16 +68,15 @@ public class GeometryTest {
         Point p3 = new Point(rect.getOriginX(), rect.getHeight());
         Point p4 = new Point(rect.getWidth(), rect.getHeight());
 
-        assertTrue(Geometry.isOnRect(p1, p2, p3, p4, new Point(71, 10)));
+        assertTrue(Geometry.isOnRect(p1, p2, p3, p4, new Point(71, 0)));
         assertTrue(Geometry.isOnRect(p1, p2, p3, p4, new Point(100, 44)));
         assertTrue(Geometry.isOnRect(p1, p2, p3, p4, new Point(49, 100)));
-        assertTrue(Geometry.isOnRect(p1, p2, p3, p4, new Point(10, 82)));
+        assertTrue(Geometry.isOnRect(p1, p2, p3, p4, new Point(0, 82)));
 
-        assertFalse(Geometry.isOnRect(p1, p2, p3, p4, new Point(71, 14)));
+        assertFalse(Geometry.isOnRect(p1, p2, p3, p4, new Point(71, 04)));
         assertFalse(Geometry.isOnRect(p1, p2, p3, p4, new Point(104, 44)));
         assertFalse(Geometry.isOnRect(p1, p2, p3, p4, new Point(49, 104)));
-        assertFalse(Geometry.isOnRect(p1, p2, p3, p4, new Point(14, 82)));
-//        assertFalse(Geometry.isOnRect(p1, p2, p3, p4, new Point(100, 100)));
+        assertFalse(Geometry.isOnRect(p1, p2, p3, p4, new Point(04, 82)));
     }
 
     @Test
@@ -108,5 +111,9 @@ public class GeometryTest {
 
     @Test
     public void isOnPolygon() {
+        Point[] p = {new Point(25, 0), new Point(75, 0), new Point(100, 50),
+                new Point(75, 100), new Point(25, 100), new Point(0, 50), new Point(25, 0)};
+
+        assertTrue(Geometry.isOnPolygon(p, new Point()));
     }
 }

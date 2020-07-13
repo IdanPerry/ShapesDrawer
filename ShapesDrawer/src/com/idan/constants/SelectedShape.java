@@ -19,17 +19,18 @@ public enum SelectedShape {
 	LINE("line", 7),
 	FREE_DRAW("draw", 8);
 	
-	private final String symbol;
+	private final String name;
 	private final int index;
 	
 	/**
 	 * Constructs an enum selected shape object with the
 	 * associated shape url name (for use with icon attachment).
 	 * 
-	 * @param symbol the shape url name
+	 * @param name the shape url name
+	 * @param index the index of the selected shape as a relative position
 	 */
-	SelectedShape(String symbol, int index) {
-		this.symbol = symbol;
+	SelectedShape(String name, int index) {
+		this.name = name;
 		this.index = index;
 	}
 	
@@ -44,6 +45,6 @@ public enum SelectedShape {
 
 	@Override
 	public String toString() {
-		return symbol;
+		return name;
 	}
 }
