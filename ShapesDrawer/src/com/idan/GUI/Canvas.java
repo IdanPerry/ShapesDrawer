@@ -1,6 +1,5 @@
 package com.idan.GUI;
 
-import com.idan.constants.MenuItem;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -16,16 +15,20 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 import java.util.Stack;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.idan.constants.MenuItem;
 import com.idan.constants.CustomColor;
 import com.idan.constants.DrawingTool;
 import com.idan.constants.Mode;
@@ -48,7 +51,6 @@ import com.idan.drawables.Pentagon;
  * @version 03.05.2020
  */
 
-@SuppressWarnings("serial")
 public class Canvas extends JPanel implements MouseListener, MouseMotionListener, ActionListener {
     private static final int BASIC_THICK = 1;
     public static final int OVAL_THICK_FIX = 3;
@@ -61,12 +63,14 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     private static final Cursor MOVING = new Cursor(Cursor.MOVE_CURSOR);
     private static final BasicStroke DASH = new BasicStroke(1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10.0f, new float[]{10.0f}, 0.0f);
 
+    private JFileChooser file;
+
     private final DrawingEditor editor;
     private final Stack<Shape> drawings;
     private final Stack<Shape> restored;
     private JPopupMenu menu;
     private JMenuItem[] items;
-    private BufferedImage chalkboard;
+    private BufferedImage board;
     private SelectedShape selectedShape;
     private DrawingTool drawingTool;
     private FreeDraw freeDraw;
@@ -107,17 +111,44 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
         // customize properties of this canvas
         setBackground(CustomColor.LIGHTER_GRAY);
         initPopupMenu();
-
-        try {
-            // canvas background
-            chalkboard = ImageIO.read(getClass().getResourceAsStream("/chalkboard2.jpg"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setBoard("chalkboard2");
 
         // add listeners
         addMouseListener(this);
         addMouseMotionListener(this);
+
+        setImageSaving();
+    }
+
+    /**
+     *
+     */
+    public void save() {
+        BufferedImage img  = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_3BYTE_BGR);
+        Graphics g = img.createGraphics();
+        paint(g);
+
+        int returnVal = file.showSaveDialog(this);
+        if(returnVal == JFileChooser.APPROVE_OPTION) {
+            try {
+                ImageIO.write(img, "PNG", file.getSelectedFile());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     *
+     */
+    public void setBoard(String board) {
+        try {
+            // canvas background
+            this.board = ImageIO.read(getClass().getResourceAsStream("/" + board + ".jpg"));
+            repaint();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -211,6 +242,16 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
      */
     public void setMode(Mode mode) {
         this.mode = mode;
+    }
+
+    /*
+     *
+     */
+    private void setImageSaving() {
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG Images", "png");
+        file = new JFileChooser();
+        file.setSelectedFile(new File("./drawing.png"));
+        file.setFileFilter(filter);
     }
 
     /*
@@ -506,7 +547,7 @@ public class Canvas extends JPanel implements MouseListener, MouseMotionListener
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
-        g2.drawImage(chalkboard, 0, 0, null);
+        g2.drawImage(board, 0, 0, null);
         g2.setFont(new Font("SansSerif", Font.PLAIN, 13));
         g2.setColor(CustomColor.WHITE);
         // enable antialiasing

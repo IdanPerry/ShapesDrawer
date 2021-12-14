@@ -1,5 +1,6 @@
 package com.idan.GUI;
 
+import com.idan.constants.CanvasBackground;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -12,6 +13,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -28,13 +32,15 @@ import com.idan.constants.SelectedShape;
  * @version 03.05.2020
  */
 
-@SuppressWarnings("serial")
 public class UserInterface extends JFrame implements ActionListener {
 	private static final int WIDTH = 1100, HEIGHT = 700;
-	private static final Dimension MIN_SIZE = new Dimension(730, 500);
+	private static final Dimension MIN_SIZE = new Dimension(800, 500);
 	private static final Dimension COLOR_BTN_SIZE = new Dimension(20, 20);
 	private static final Dimension BTN_CUSTOM_SIZE = new Dimension(50, 30);
 	private static final EmptyBorder PANEL_BORDER = new EmptyBorder(10, 10, 10, 10);
+
+	private final JMenuBar menuBar;
+	private final JMenu file, selectBoard;
 
 	private final JPanel mainUiPanel;
 	private final JPanel colorsPanel;
@@ -61,6 +67,10 @@ public class UserInterface extends JFrame implements ActionListener {
 	 * drawing and painting.
 	 */
 	public UserInterface() {
+		menuBar = new JMenuBar();
+		file = new JMenu("File");
+		selectBoard = new JMenu("Select board");
+
 		mainUiPanel = new JPanel();
 		editPanel = new JPanel(new GridLayout(2, 0, 2, 2));
 		shapesPanel = new JPanel(new GridLayout(2, 4, 2, 2));
@@ -77,6 +87,7 @@ public class UserInterface extends JFrame implements ActionListener {
 		getContentPane().setBackground(CustomColor.LIGHTER_GRAY);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/abstract.png")));
 
+		initMenu();
 		initPanels();
 		initEditTools();
 		initShapes();
@@ -86,6 +97,42 @@ public class UserInterface extends JFrame implements ActionListener {
 		validate();
 		thicknessSelect.initWindow(selectThickness, canvas);
 		setVisible(true);
+	}
+
+	/*
+	 * Initializes the top bar menu of this window.
+	 */
+	private void initMenu() {
+		JMenuItem menuItem;
+		menuBar.add(file);
+		file.add(selectBoard);
+
+//		for(CanvasBackground b : CanvasBackground.values()) {
+//			menuItem = new JMenuItem(b.toString());
+//			menuItem.addActionListener(this);
+//			subMenu.add(menuItem);
+//		}
+
+		// item 1
+		menuItem = new JMenuItem("Black chalk board");
+		menuItem.addActionListener(this);
+		selectBoard.add(menuItem);
+
+		// item 2
+		menuItem = new JMenuItem("Black board with grid");
+		menuItem.addActionListener(this);
+		selectBoard.add(menuItem);
+
+		// item 3
+		menuItem = new JMenuItem("Blue board with grid");
+		menuItem.addActionListener(this);
+		selectBoard.add(menuItem);
+
+		menuItem = new JMenuItem("Save as PNG");
+		menuItem.addActionListener(this);
+		file.add(menuItem);
+
+		setJMenuBar(menuBar);
 	}
 
 	/*
@@ -221,6 +268,16 @@ public class UserInterface extends JFrame implements ActionListener {
 	}
 
 	/*
+	 *
+	 */
+	private void selectBoard(ActionEvent e) {
+		for (CanvasBackground b : CanvasBackground.values()) {
+			if(e.getSource() == selectBoard.getItem(b.getIndex()))
+				canvas.setBoard(b.toString());
+		}
+	}
+
+	/*
 	 * Check if one of the shapes selection buttons was clicked.
 	 */
 	private void selectShape(ActionEvent e) {
@@ -301,11 +358,15 @@ public class UserInterface extends JFrame implements ActionListener {
 	}
 	
 	@Override
-	public void actionPerformed(ActionEvent e) {	
+	public void actionPerformed(ActionEvent e) {
+		selectBoard(e);
 		selectColor(e);
 		selectShape(e);		
 		selectTool(e);
 		selectEdit(e);
+
+		if(e.getSource() == file.getItem(1))
+			canvas.save();
 	}
 
 	private class MouseHandler extends MouseAdapter{
